@@ -9,6 +9,7 @@ using Essentials.Utils.Reflection.Extensions;
 using Essentials.Utils.Reflection.Helpers;
 using Microsoft.Extensions.Logging;
 // ReSharper disable InvertIf
+// ReSharper disable MemberCanBeProtected.Global
 
 namespace Essentials.Database.EF.Migration.Implementations;
 
@@ -20,7 +21,7 @@ internal class EFMigrationService : IEFMigrationService
     protected ILogger Logger { get; }
     protected EFOptions Options { get; }
     
-    protected EFMigrationService(
+    public EFMigrationService(
         ILoggerFactory loggerFactory,
         EFOptions options,
         IServiceProvider serviceProvider)
