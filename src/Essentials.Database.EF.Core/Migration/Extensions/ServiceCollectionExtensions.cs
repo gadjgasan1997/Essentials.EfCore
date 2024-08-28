@@ -14,11 +14,14 @@ internal static class ServiceCollectionExtensions
     /// Настраивает сервис управления миграциями для EF
     /// </summary>
     /// <param name="services"></param>
+    /// <typeparam name="TContext">Тип контекста</typeparam>
     /// <returns></returns>
-    public static IServiceCollection ConfigureEFMigrationService(this IServiceCollection services)
+    public static IServiceCollection ConfigureEFMigrationService<TContext>(this IServiceCollection services)
+        where TContext : DbContext
     {
-        services.AddHostedService<MigrationHostedService>();
-        services.TryAddScoped<IEFMigrationService, EFMigrationService>();
+        services
+            .ConfigureEFMigrationService()
+            .TryAddScoped<IEFMigrationService<TContext>, EFMigrationService<TContext>>();
         
         return services;
     }
@@ -27,12 +30,12 @@ internal static class ServiceCollectionExtensions
     /// Настраивает сервис управления миграциями для EF
     /// </summary>
     /// <param name="services"></param>
-    /// <typeparam name="TContext">Тип контекста</typeparam>
     /// <returns></returns>
-    public static IServiceCollection ConfigureEFMigrationService<TContext>(this IServiceCollection services)
-        where TContext : DbContext
+    private static IServiceCollection ConfigureEFMigrationService(this IServiceCollection services)
     {
-        services.TryAddScoped<IEFMigrationService<TContext>, EFMigrationService<TContext>>();
+        services.AddHostedService<MigrationHostedService>();
+        services.TryAddScoped<IEFMigrationService, EFMigrationService>();
+        
         return services;
     }
 }

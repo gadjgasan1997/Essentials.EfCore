@@ -8,7 +8,6 @@ using Essentials.Database.EF.Metrics.Extensions;
 using Essentials.Database.EF.Migration.Extensions;
 using Essentials.Database.EF.Options;
 // ReSharper disable SuggestBaseTypeForParameter
-// ReSharper disable MemberCanBePrivate.Global
 
 namespace Essentials.Database.EF.Extensions;
 
@@ -37,6 +36,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .ConfigureEFOptions(configuration)
+            .ConfigureEFMetrics(configuration)
             .ConfigureEFMigrationService<TContext>()
             .ConfigureWithRegisteredService<EFOptions>(options =>
             {
@@ -60,7 +60,7 @@ public static class ServiceCollectionExtensions
     /// <param name="configuration"></param>
     /// <returns></returns>
     /// <exception cref="InvalidEFConfigurationException"></exception>
-    public static IServiceCollection ConfigureEFOptions(
+    private static IServiceCollection ConfigureEFOptions(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -84,12 +84,6 @@ public static class ServiceCollectionExtensions
         if (!section.Exists())
             throw new InvalidEFConfigurationException("В конфигурации отсутствует секция с опциями EF");
 
-        var options = section.GetEFOptions();
-
-        services.TryAddSingleton(options);
-
-        services
-            .ConfigureEFMetrics(configuration)
-            .ConfigureEFMigrationService();
+        services.TryAddSingleton(section.GetEFOptions());
     }
 }
