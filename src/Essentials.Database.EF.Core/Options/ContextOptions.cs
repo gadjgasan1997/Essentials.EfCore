@@ -11,6 +11,7 @@ public record ContextOptions
     internal ContextOptions(
         ContextName name,
         int? poolSize,
+        bool? usePool,
         bool? enableDetailedErrors,
         bool? enableSensitiveDataLogging,
         RetryOptions? retryOptions,
@@ -18,6 +19,7 @@ public record ContextOptions
         MetricsOptions? metricsOptions)
     {
         Name = name;
+        UsePool = usePool ?? false;
         PoolSize = poolSize ?? 1024;
         EnableDetailedErrors = enableDetailedErrors ?? false;
         EnableSensitiveDataLogging = enableSensitiveDataLogging ?? false;
@@ -30,6 +32,11 @@ public record ContextOptions
     /// Название
     /// </summary>
     public ContextName Name { get; }
+    
+    /// <summary>
+    /// Признак необходимости использовать пул
+    /// </summary>
+    public bool UsePool { get; }
     
     /// <summary>
     /// Размера пула

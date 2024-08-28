@@ -114,6 +114,7 @@ internal static class ConfigurationExtensions
         var contextName = ContextName.Create(name!);
 
         var poolSize = section.GetValue<int?>(nameof(ContextOptions.PoolSize));
+        var usePool = section.GetValue<bool?>(nameof(ContextOptions.UsePool));
         var enableDetailedErrors = section.GetValue<bool?>(nameof(ContextOptions.EnableDetailedErrors));
         var enableSensitiveDataLogging = section.GetValue<bool?>(nameof(ContextOptions.EnableSensitiveDataLogging));
         
@@ -124,6 +125,7 @@ internal static class ConfigurationExtensions
         return new ContextOptions(
             contextName,
             poolSize,
+            usePool,
             enableDetailedErrors,
             enableSensitiveDataLogging,
             retryOptions,
